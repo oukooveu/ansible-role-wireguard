@@ -1,0 +1,54 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: podman
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
+  flake8
+platforms:
+  - name: node1
+    image: ${MOLECULE_IMAGE:-debian:10}
+    command: /sbin/init
+    systemd: true
+    capabilities:
+      - NET_ADMIN
+    network: molecule-wireguard
+  - name: node2
+    image: ${MOLECULE_IMAGE:-debian:10}
+    command: /sbin/init
+    systemd: true
+    capabilities:
+      - NET_ADMIN
+    network: molecule-wireguard
+  - name: node3
+    image: ${MOLECULE_IMAGE:-debian:10}
+    command: /sbin/init
+    systemd: true
+    capabilities:
+      - NET_ADMIN
+    network: molecule-wireguard
+provisioner:
+  name: ansible
+  ansible_args:
+    - -D
+  config_options:
+    defaults:
+      any_errors_fatal: true
+      callbacks_enabled: ansible.posix.profile_tasks
+  inventory:
+    host_vars:
+      node1:
+        wireguard_vpn_ip: '10.101.0.1'
+      node2:
+        wireguard_vpn_ip: '10.102.0.1'
+      node3:
+        wireguard_vpn_ip: '10.103.0.1'
+verifier:
+  name: testinfra
+  enabled: true
+  options:
+    p: 'no:pytest-ansible'
+    v: true

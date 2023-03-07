@@ -1,0 +1,12 @@
+---
+- name: main | install wireguard
+  ansible.builtin.include_tasks: "install.yml"
+
+- name: main | configure wireguard
+  ansible.builtin.include_tasks: "config.yml"
+
+- name: main | enable wireguard service
+  ansible.builtin.service:
+    name: "wg-quick@{{ wireguard_network_name }}"
+    state: started
+    enabled: yes

@@ -1,0 +1,16 @@
+---
+wireguard_port: '51820'
+wireguard_path: '/etc/wireguard'
+
+# wireguard_vpn_ip: "10.0.0.10"
+wireguard_public_ip: "{{ ansible_default_ipv4.address }}"
+
+wireguard_post_up: ''
+wireguard_post_down: ''
+
+wireguard_network: {}
+wireguard_network_name: 'wg0'
+wireguard_additional_peers: []
+
+wireguard_mtu_enabled: false
+wireguard_fw_mark_enabled: false

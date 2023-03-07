@@ -1,0 +1,47 @@
+---
+- name: install | debian backports
+  ansible.builtin.copy:
+    src: backports.list
+    dest: /etc/apt/sources.list.d/backports.list
+    mode: '0644'
+  when:
+    - ansible_distribution == "Debian"
+    - ansible_distribution_major_version|int <= 10
+
+- name: install | wireguard (debian)
+  ansible.builtin.apt:
+    name: wireguard
+    state: present
+    update_cache: true
+  when: ansible_distribution == "Debian"
+
+- name: install | epel (redhat)
+  ansible.builtin.dnf:
+    name:
+      - elrepo-release
+      - epel-release
+    state: present
+  when:
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version|int <= 8
+
+- name: install | kmod (redhat)
+  ansible.builtin.dnf:
+    name: kmod-wireguard
+    state: present
+  when:
+    - ansible_os_family == "RedHat"
+    - ansible_distribution_major_version|int <= 8
+
+- name: install | wireguard (redhat)
+  ansible.builtin.dnf:
+    name: wireguard-tools
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: install | wireguard config path
+  ansible.builtin.file:
+    path: "{{ wireguard_path }}"
+    state: directory
+    mode: '0700'
+    group: root

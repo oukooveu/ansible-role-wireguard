@@ -1,0 +1,14 @@
+---
+- name: converge
+  hosts: all
+  vars:
+    wireguard_network:
+      node1:
+        - node2
+        - node3
+      node2:
+        - node1
+      node3:
+        - node1
+  roles:
+    - role: oukooveu.wireguard

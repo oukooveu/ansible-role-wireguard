@@ -1,0 +1,42 @@
+[Interface]
+Address = {{ wireguard_vpn_ip }}
+ListenPort = {{ wireguard_port }}
+PrivateKey = {{ _wireguard_private_key.content | b64decode | trim }}
+{% if wireguard_mtu_enabled|bool %}
+MTU = {{ wireguard_mtu }}
+{% endif %}
+{% if wireguard_fw_mark_enabled|bool %}
+FwMark = {{ wireguard_fw_mark | default(wireguard_port) }}
+{% endif %}
+{% if wireguard_post_up|length > 0 %}
+PostUp = {{ wireguard_post_up }}
+{% endif %}
+{% if wireguard_post_down|length > 0 %}
+PostDown = {{ wireguard_post_down }}
+{% endif %}
+
+{% for node in _wireguard_hosts %}
+{%   if inventory_hostname != hostvars[node]['inventory_hostname'] %}
+[Peer]
+PublicKey = {{ hostvars[node]._wireguard_public_key.content | b64decode | trim }}
+AllowedIPs = {{ hostvars[node].wireguard_vpn_ip }}
+Endpoint = {{ hostvars[node]['wireguard_public_address'] | default(hostvars[node]['ansible_default_ipv4']['address']) }}:{{ wireguard_port }}
+
+{%   endif %}
+{% endfor %}
+
+{% if wireguard_additional_peers  %}
+{%   for node in wireguard_additional_peers %}
+# {{ node.comment  }}
+[Peer]
+PublicKey = {{ node.key }}
+AllowedIPs = {{ node.ip }}
+{%     if node.endpoint is defined %}
+Endpoint = {{ node.endpoint }}
+{%     endif %}
+{%     if node.keepalive is defined %}
+PersistentKeepalive = {{ node.keepalive }}
+{%     endif %}
+
+{%   endfor %}
+{% endif %}
