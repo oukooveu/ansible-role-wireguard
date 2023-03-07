@@ -17,7 +17,7 @@ ENV {{ var }} {{ value }}
 RUN if [ $(command -v apt-get) ]; then \
         export DEBIAN_FRONTEND=noninteractive && \
         apt-get update && \
-        apt-get install -y systemd systemd-sysv net-tools python3 sudo bash ca-certificates iproute2 python3-apt aptitude procps && \
+        apt-get install -y systemd systemd-sysv net-tools python3 sudo bash ca-certificates iproute2 iputils-ping python3-apt aptitude procps && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
         rm -f /lib/systemd/system/multi-user.target.wants/* \
