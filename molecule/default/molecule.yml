@@ -15,6 +15,7 @@ platforms:
     command: /sbin/init
     systemd: true
     capabilities:
+      - NET_RAW
       - NET_ADMIN
     network: molecule-wireguard
   - name: node2
@@ -22,6 +23,7 @@ platforms:
     command: /sbin/init
     systemd: true
     capabilities:
+      - NET_RAW
       - NET_ADMIN
     network: molecule-wireguard
   - name: node3
@@ -29,6 +31,7 @@ platforms:
     command: /sbin/init
     systemd: true
     capabilities:
+      - NET_RAW
       - NET_ADMIN
     network: molecule-wireguard
 provisioner:
