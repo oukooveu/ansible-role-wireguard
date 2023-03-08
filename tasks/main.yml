@@ -1,4 +1,9 @@
 ---
+- name: check for wireguard_vpn_ip
+  ansible.builtin.assert:
+    that:
+      - wireguard_vpn_ip | ansible.utils.ipaddr == wireguard_vpn_ip
+
 - name: main | install wireguard
   ansible.builtin.include_tasks: "install.yml"
 

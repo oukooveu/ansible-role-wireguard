@@ -7,7 +7,7 @@ The role was inspired by [this](https://github.com/mawalu/wireguard-private-netw
 
 ## Requirements
 
-There are no special requirements.
+There are no special requirements. There is no default for `wireguard_vpn_ip`, this variable must be defined for each host.
 
 ## Role Variables
 
@@ -27,6 +27,12 @@ There are no special requirements.
 | wireguard_fw_mark_enabled | manage `FwMark` option | `false` |
 | wireguard_fw_mark | `FwMark` option value | `{{ wireguard_port }}` |
 
+`FwMark` wireguard option can be useful when you need to filter out all unencrypted traffic, for example:
+```
+PostUp = iptables -I OUTPUT ! -o %i -m mark ! --mark $(wg show %i fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
+PreDown = iptables -D OUTPUT ! -o %i -m mark ! --mark $(wg show %i fwmark) -m addrtype ! --dst-type LOCAL -j REJECT
+```
+
 ## Example Playbooks
 
 ### full-mesh network
@@ -37,7 +43,7 @@ There are no special requirements.
     - role: oukooveu.wireguard
 ```
 
-### custom network topology with additional peers
+### custom network topology with additional peer
 ```
 - name: setup wireguard custom network
   hosts: cluster
