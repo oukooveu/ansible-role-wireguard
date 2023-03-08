@@ -20,7 +20,7 @@ PostDown = {{ wireguard_post_down }}
 [Peer]
 PublicKey = {{ hostvars[node]._wireguard_public_key.content | b64decode | trim }}
 AllowedIPs = {{ hostvars[node].wireguard_vpn_ip }}
-Endpoint = {{ hostvars[node]['wireguard_public_address'] | default(hostvars[node]['ansible_default_ipv4']['address']) }}:{{ wireguard_port }}
+Endpoint = {{ hostvars[node]['wireguard_public_ip'] }}:{{ wireguard_port }}
 
 {%   endif %}
 {% endfor %}
