@@ -20,7 +20,7 @@
 
 - name: config | full mesh network
   ansible.builtin.set_fact:
-    _wireguard_hosts: "{{ play_hosts }}"
+    _wireguard_hosts: "{{ ansible_play_hosts }}"
   when: wireguard_network|length == 0
 
 - name: config | user controlled wireguard hosts
