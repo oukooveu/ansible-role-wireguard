@@ -28,6 +28,13 @@
     _wireguard_hosts: "{{ wireguard_network.get(inventory_hostname, []) }}"
   when: wireguard_network|length > 0
 
+- name: config | check configured hosts are available
+  ansible.builtin.assert:
+    that:
+      - item in ansible_play_hosts
+    msg: "host '{{ item }}' is presented in wireguard configuration for '{{ inventory_hostname }}' but it's unavailable"
+  loop: "{{ _wireguard_hosts }}"
+
 - name: config | generate wireguard config
   ansible.builtin.template:
     src: wireguard.conf.j2
