@@ -18,6 +18,8 @@ platforms:
       - NET_RAW
       - NET_ADMIN
     network: molecule-wireguard
+    extra_opts:
+      - --no-hosts
   - name: node2
     image: ${MOLECULE_IMAGE:-debian:10}
     command: /sbin/init
@@ -26,6 +28,8 @@ platforms:
       - NET_RAW
       - NET_ADMIN
     network: molecule-wireguard
+    extra_opts:
+      - --no-hosts
   - name: node3
     image: ${MOLECULE_IMAGE:-debian:10}
     command: /sbin/init
@@ -34,6 +38,8 @@ platforms:
       - NET_RAW
       - NET_ADMIN
     network: molecule-wireguard
+    extra_opts:
+      - --no-hosts
 provisioner:
   name: ansible
   ansible_args:

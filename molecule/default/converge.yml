@@ -10,5 +10,7 @@
         - node1
       node3:
         - node1
+    wireguard_hosts_enabled: true
+    wireguard_hosts_domain: 'localdomain'
   roles:
     - role: oukooveu.wireguard

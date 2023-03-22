@@ -1,4 +1,5 @@
 import pytest
+import re
 
 network_map = {
     'node1': {
@@ -41,3 +42,24 @@ def test_wireguard_network(host, remote, map=network_map):
     else:
         assert command.rc == 1
         assert '1 packets transmitted, 0 received' in command.stdout
+
+
+def test_etc_hosts_local(host, map=network_map):
+    hostname = host.backend.get_hostname()
+
+    re_local = re.compile('^' + map[hostname]['ip'] + '\\s+' + hostname + '.localdomain' + '$', re.M)
+    assert bool(re.search(re_local, host.file('/etc/hosts').content_string))
+
+
+@pytest.mark.parametrize("remote", ('node1', 'node2', 'node3'))
+def test_etc_hosts_remote(host, remote, map=network_map):
+    hostname = host.backend.get_hostname()
+
+    if remote == hostname:
+        pytest.skip("localhost")
+
+    re_remote = re.compile('^' + map[remote]['ip'] + '\\s+' + remote + '.localdomain\\s+' + remote + '$', re.M)
+    if remote in map[hostname]['remotes']:
+        assert bool(re.search(re_remote, host.file('/etc/hosts').content_string))
+    else:
+        assert not bool(re.search(re_remote, host.file('/etc/hosts').content_string))

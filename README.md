@@ -26,6 +26,8 @@ There are no special requirements. There is no default for `wireguard_vpn_ip`, t
 | wireguard_mtu | `MTU` option value | N/A |
 | wireguard_fw_mark_enabled | manage `FwMark` option | `false` |
 | wireguard_fw_mark | `FwMark` option value | `{{ wireguard_port }}` |
+| wireguard_hosts_enabled | /etc/hosts management enabled | `false` |
+| wireguard_hosts_domain | domain for /etc/hosts records | `wg.internal` |
 
 `FwMark` wireguard option can be useful when you need to filter out all unencrypted traffic, for example:
 ```
