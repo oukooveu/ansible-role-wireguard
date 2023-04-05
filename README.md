@@ -13,9 +13,9 @@ There are no special requirements. There is no default for `wireguard_vpn_ip`, t
 
 | Variable | Description | Default value |
 |----------|-------------|---------------|
+| wireguard_vpn_ip | private address | N/A, must be provided through host vars |
 | wireguard_port | port to listen | `51820` |
 | wireguard_path | path to configuration files | `/etc/wireguard` |
-| wireguard_vpn_ip | private address | N/A, must be provided through host vars |
 | wireguard_public_ip | public address| `{{ ansible_default_ipv4.address }}` |
 | wireguard_post_up | post up script | N/A |
 | wireguard_post_down | post down script | N/A |
@@ -26,7 +26,7 @@ There are no special requirements. There is no default for `wireguard_vpn_ip`, t
 | wireguard_mtu | `MTU` option value | N/A |
 | wireguard_fw_mark_enabled | manage `FwMark` option | `false` |
 | wireguard_fw_mark | `FwMark` option value | `{{ wireguard_port }}` |
-| wireguard_hosts_enabled | /etc/hosts management enabled | `false` |
+| wireguard_hosts_enabled | add itself and wireguard peers into /etc/hosts | `false` |
 | wireguard_hosts_domain | domain for /etc/hosts records | `wg.internal` |
 
 `FwMark` wireguard option can be useful when you need to filter out all unencrypted traffic, for example:

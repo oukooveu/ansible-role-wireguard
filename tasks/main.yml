@@ -2,6 +2,7 @@
 - name: check for wireguard_vpn_ip
   ansible.builtin.assert:
     that:
+      - wireguard_vpn_ip is defined
       - wireguard_vpn_ip | ansible.utils.ipaddr == wireguard_vpn_ip
 
 - name: main | install wireguard
@@ -22,7 +23,7 @@
     marker: "# {mark} WIREGUARD MANAGED BLOCK"
     block: |
       {{ wireguard_vpn_ip }} {{ inventory_hostname }}.{{ wireguard_hosts_domain }}
-      {% for host in wireguard_network[inventory_hostname] | sort %}
+      {% for host in wireguard_network.get(inventory_hostname,[]) | sort %}
       {{ hostvars[host]['wireguard_vpn_ip'] }} {{ host }}.{{ wireguard_hosts_domain }} {{ host }}
       {% endfor %}
   when: wireguard_hosts_enabled|bool
