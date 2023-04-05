@@ -23,7 +23,7 @@
     marker: "# {mark} WIREGUARD MANAGED BLOCK"
     block: |
       {{ wireguard_vpn_ip }} {{ inventory_hostname }}.{{ wireguard_hosts_domain }}
-      {% for host in wireguard_network.get(inventory_hostname,[]) | sort %}
+      {% for host in wireguard_network.get(inventory_hostname, []) | sort %}
       {{ hostvars[host]['wireguard_vpn_ip'] }} {{ host }}.{{ wireguard_hosts_domain }} {{ host }}
       {% endfor %}
   when: wireguard_hosts_enabled|bool
