@@ -12,11 +12,24 @@
   ansible.builtin.slurp:
     src: "{{ wireguard_path }}/privatekey"
   register: _wireguard_private_key
+  ignore_errors: true
 
 - name: config | read public key
   ansible.builtin.slurp:
     src: "{{ wireguard_path }}/publickey"
   register: _wireguard_public_key
+  ignore_errors: true
+
+- name: config | check mode placeholders
+  ansible.builtin.set_fact:
+    _wireguard_private_key:
+      content: "Q0hFQ0tfTU9ERV9QUklWQVRFX0tFWV9QTEFDRUhPTERFUg=="
+    _wireguard_public_key:
+      content: "Q0hFQ0tfTU9ERV9QVUJMSUNfS0VZX1BMQUNFSE9MREVS"
+  when:
+    - ansible_check_mode
+    - _wireguard_private_key.failed
+    - _wireguard_public_key.failed
 
 - name: config | full mesh network
   ansible.builtin.set_fact:

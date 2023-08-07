@@ -16,6 +16,7 @@
     name: "wg-quick@{{ wireguard_network_name }}"
     state: started
     enabled: yes
+  when: not ansible_check_mode
 
 - name: main | configure static resolution for wireguard addresses
   ansible.builtin.blockinfile:
