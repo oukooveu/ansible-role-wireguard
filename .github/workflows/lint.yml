@@ -1,0 +1,25 @@
+---
+name: lint
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: dependencies
+        run: pip3 install -r molecule/default/requirements.txt
+      # molecule's lint stage was removed: https://github.com/ansible/molecule/discussions/3825#discussioncomment-4908366
+      - name: lint
+        run: |
+          set -e
+          yamllint .
+          ansible-lint -p -v
+          flake8
