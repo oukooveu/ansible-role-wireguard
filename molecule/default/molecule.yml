@@ -4,15 +4,10 @@ dependency:
   enabled: false
 driver:
   name: podman
-lint: |
-  set -e
-  yamllint .
-  ansible-lint .
-  flake8
 platforms:
   - name: node1
-    image: ${MOLECULE_IMAGE:-debian:10}
-    command: /sbin/init
+    image: ${MOLECULE_IMAGE:-debian:11}
+    command: /lib/systemd/systemd
     systemd: true
     capabilities:
       - NET_RAW
@@ -21,8 +16,8 @@ platforms:
     extra_opts:
       - --no-hosts
   - name: node2
-    image: ${MOLECULE_IMAGE:-debian:10}
-    command: /sbin/init
+    image: ${MOLECULE_IMAGE:-debian:11}
+    command: /lib/systemd/systemd
     systemd: true
     capabilities:
       - NET_RAW
@@ -31,8 +26,8 @@ platforms:
     extra_opts:
       - --no-hosts
   - name: node3
-    image: ${MOLECULE_IMAGE:-debian:10}
-    command: /sbin/init
+    image: ${MOLECULE_IMAGE:-debian:11}
+    command: /lib/systemd/systemd
     systemd: true
     capabilities:
       - NET_RAW

@@ -87,7 +87,7 @@ pip install -r molecule/default/requirements.txt
 molecule test
 ```
 
-To run tests for non-default image (`debian:10`) set `MOLECULE_IMAGE` environment variable to an appropriate value, for example:
+To run tests for non-default image (`debian:11`) set `MOLECULE_IMAGE` environment variable to an appropriate value, for example:
 ```
 export MOLECULE_IMAGE=rockylinux:9
 ```

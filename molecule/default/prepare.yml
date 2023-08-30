@@ -5,4 +5,5 @@
     - name: manage /etc/hosts
       ansible.builtin.copy:
         dest: /etc/hosts
-        content: "127.0.0.1\tlocalhost"
+        content: '127.0.0.1\tlocalhost'
+        mode: '0644'
